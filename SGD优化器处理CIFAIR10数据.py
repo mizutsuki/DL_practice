@@ -56,7 +56,9 @@ for y in range(3):
         res_loss = loss_func(res, target)
         # 记录
         sw.add_scalar("cross_entropy_loss", res_loss, counter)
-        counter += 10
+        if res_loss <= 0.1:
+            break
+        counter += 1
         # 梯度归零0
         gsd_opt.zero_grad()
         # 利用损失函数进行反向传播
