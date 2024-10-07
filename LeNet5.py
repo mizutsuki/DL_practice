@@ -15,7 +15,6 @@ class LeNet5(nn.Module):
         )
     def forward(self, x):
         x = self.seq1(x)
-        x = nn.functional.softmax(x, dim=1)
         return x
 
 test = torch.randn(1, 3, 32, 32)
