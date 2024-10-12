@@ -42,14 +42,11 @@ def extract(x: list):
 # 样本x进行编码
 def str_encoder(x: str):
     container = []
-    # 规范化输入
+    padding = 0
+    # 将输出填充为8
     sub_x = len(x)
-    # 接收形参
-    x_ = x
-    # 补全
     if sub_x < num_iter:
-        # 输出补全, 由RNN迭代数确定
-        x_ = x + '\0' * (num_iter - sub_x)
+        padding += num_iter - sub_x
 
     # 单个字符转码
     def encoder(ele: str):
@@ -62,25 +59,29 @@ def str_encoder(x: str):
         return cod_list
 
     # 对于字符串编码
-    for ele in x_:
+    for ele in x:
         # 加入
         container.extend([encoder(ele)])
-    container = tensor(container, dtype=torch.float32)
+    # 转为tensor格式
+    container = tensor(container, dtype=torch.int64)
+    pad_mat = torch.zeros(padding, 1, dtype=torch.int64)
+    container = torch.cat(tensors=(container, pad_mat), dim=0)
     return container
 
 
 # 字符串转Label:
 def cvt_2_long(y: str):
     container = []
-    # 规范化target
+    padding = 0
+    # 将输出填充为8
     sub_y = len(y)
-    y_ = y
     if sub_y < num_iter:
-        # 输出补全, 由RNN迭代数确定
-        y_ = y + '\0' * (num_iter - sub_y)
-    for lable in y_:
+        padding += num_iter - sub_y
+    for lable in y:
         container.append([mapping.get(lable)])
     container = tensor(container, dtype=torch.int64)
+    pad_mat = torch.zeros(padding, 1, dtype=torch.int64)
+    container = torch.cat(tensors=(container, pad_mat), dim=0)
     return container
 
 def train():
