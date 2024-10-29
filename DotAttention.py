@@ -1,3 +1,5 @@
+import math
+
 import torch
 from torch import tensor,nn
 class Dotatt(nn.Module):
@@ -6,7 +8,7 @@ class Dotatt(nn.Module):
         self.softmax = nn.Softmax(dim=-1)
     def forward(self, K, V, Q, d):
         # 找与K最相近的Q
-        score = torch.bmm(Q, K) / d
+        score = torch.bmm(Q, K) / math.sqrt(d)
         # 这里可以使用遮罩softmax
         att = self.softmax(score)
         res = torch.bmm(att, V)
