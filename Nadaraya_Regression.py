@@ -76,6 +76,12 @@ class nw_pool_adaptive(nn.Module):
         # 转矩阵
         query = tensor(query, dtype=torch.float32)
         query = query.expand(size, size)
+        # query = query.expand(size, size)
+        # 这里可以使用广播机制
+        # 如果上面的a reshape成矩阵, 则query可以是向量
+        # 注意这里是行向量, 因为repeat_interleave的时候,
+        # 变成成了[[a, a, ...], [n, n, ...]]
+        query = query.reshape(1, -1)
 
         # 相乘得到结果
         value = tensor(value, dtype=torch.float32)
