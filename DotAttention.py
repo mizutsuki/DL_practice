@@ -9,13 +9,14 @@ class Dotatt(nn.Module):
     def forward(self, K, V, Q, d):
         # 找与K最相近的Q
         score = torch.bmm(Q, K) / math.sqrt(d)
+        print(score)
         # 这里可以使用遮罩softmax
         att = self.softmax(score)
         res = torch.bmm(att, V)
         return res
-
-n = 6
-m = 8
+# 当query只有一条, key只有一个, value只有一个, 遮蔽也只能遮蔽一个
+n = 2
+m = 2
 # key && query has same W
 d = 10
 # key && value has equal pair
@@ -29,3 +30,4 @@ K.transpose_(1, 2)
 # 实例化
 dot = Dotatt()
 res = dot(K, V, Q, d)
+# print(res)

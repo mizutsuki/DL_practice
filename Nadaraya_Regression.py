@@ -56,7 +56,7 @@ def nw_pool(x_train, y_train, query):
     return np.array(res)
 y_pred2 = nw_pool(x_train, y_train, x_test)
 # 方法3
-# 使用一个神经元的韩餐注意力汇聚, 自适应, 可学习
+# 使用神经元的含参注意力汇聚, 自适应, 可学习
 class nw_pool_adaptive(nn.Module):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
